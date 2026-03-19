@@ -211,30 +211,29 @@
             btn.addEventListener('click', (e) => {
                 document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
                 document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                e.target.classList.add('active');
-                document.getElementById(e.target.dataset.tab).classList.add('active');
+                e.currentTarget.classList.add('active');
+                document.getElementById(e.currentTarget.dataset.tab).classList.add('active');
             });
         });
 
         async function loadAllData() {
             try {
                 const mainSnap = await getDoc(doc(db, "content", "main"));
-                if (mainSnap.exists()) {
-                    const d = mainSnap.data();
-                    document.getElementById('hero-title').value = d.heroTitle || "高知 KOCHI•ART";
-                    document.getElementById('hero-desc').value = d.heroDesc || "прогрессивные ландшафты";
-                    document.getElementById('hero-slogan').value = d.heroSlogan || "«Вид из окна меняет сознание»";
-                    document.getElementById('title-s1').value = d.titleS1 || "ПРОЕКТИРОВАНИЕ\nЧАСТНЫХ И ОБЩЕСТВЕННЫХ\nПРОСТРАНСТВ";
-                    document.getElementById('title-s2').value = d.titleS2 || "БЛАГОУСТРОЙСТВО";
-                    document.getElementById('title-s3').value = d.titleS3 || "УХОД";
-                }
+                const d = mainSnap.exists() ? mainSnap.data() : {};
+                
+                document.getElementById('hero-title').value = d.heroTitle || "高知 KOCHI•ART";
+                document.getElementById('hero-desc').value = d.heroDesc || "прогрессивные ландшафты";
+                document.getElementById('hero-slogan').value = d.heroSlogan || "«Вид из окна меняет сознание»";
+                document.getElementById('title-s1').value = d.titleS1 || "ПРОЕКТИРОВАНИЕ\nЧАСТНЫХ И ОБЩЕСТВЕННЫХ\nПРОСТРАНСТВ";
+                document.getElementById('title-s2').value = d.titleS2 || "БЛАГОУСТРОЙСТВО";
+                document.getElementById('title-s3').value = d.titleS3 || "УХОД";
+
                 const sliderSnap = await getDoc(doc(db, "content", "sliders"));
-                if (sliderSnap.exists()) {
-                    const d = sliderSnap.data();
-                    renderPreview('preview-s1', d.carousel1);
-                    renderPreview('preview-s2', d.carousel2);
-                    renderPreview('preview-s3', d.carousel3);
-                }
+                const s = sliderSnap.exists() ? sliderSnap.data() : {};
+                
+                renderPreview('preview-s1', s.carousel1);
+                renderPreview('preview-s2', s.carousel2);
+                renderPreview('preview-s3', s.carousel3);
             } catch (err) {
                 console.error(err);
                 if(err.code === 'permission-denied') {
@@ -253,39 +252,39 @@
         }
 
         document.getElementById('save-hero-btn').addEventListener('click', async (e) => {
-            e.target.textContent = "Сохранение...";
+            e.currentTarget.textContent = "Сохранение...";
             await setDoc(doc(db, "content", "main"), {
                 heroTitle: document.getElementById('hero-title').value,
                 heroDesc: document.getElementById('hero-desc').value,
                 heroSlogan: document.getElementById('hero-slogan').value
             }, { merge: true });
-            e.target.textContent = "Сохранить общие настройки";
+            e.currentTarget.textContent = "Сохранить общие настройки";
             alert("Тексты главного экрана успешно обновлены!");
         });
 
         document.querySelectorAll('.save-title-btn').forEach(btn => {
             btn.addEventListener('click', async (e) => {
-                const targetId = e.target.getAttribute('data-target');
-                const key = e.target.getAttribute('data-key');
+                const targetId = e.currentTarget.dataset.target;
+                const key = e.currentTarget.dataset.key;
                 const value = document.getElementById(targetId).value;
-                e.target.textContent = "Сохранение...";
+                e.currentTarget.textContent = "Сохранение...";
                 await setDoc(doc(db, "content", "main"), { [key]: value }, { merge: true });
-                e.target.textContent = "Сохранить текст";
+                e.currentTarget.textContent = "Сохранить текст";
                 alert("Заголовок успешно обновлен!");
             });
         });
 
         document.querySelectorAll('.upload-img-btn').forEach(btn => {
             btn.addEventListener('click', async (e) => {
-                const inputId = e.target.getAttribute('data-input');
-                const sliderKey = e.target.getAttribute('data-slider');
+                const inputId = e.currentTarget.dataset.input;
+                const sliderKey = e.currentTarget.dataset.slider;
                 const fileInput = document.getElementById(inputId);
                 const files = fileInput.files;
                 if (files.length === 0) return alert("Пожалуйста, выберите файлы для загрузки.");
                 
-                const originalText = e.target.textContent;
-                e.target.textContent = "Загружаем...";
-                e.target.disabled = true;
+                const originalText = e.currentTarget.textContent;
+                e.currentTarget.textContent = "Загружаем...";
+                e.currentTarget.disabled = true;
                 
                 try {
                     // Получаем секретный ключ ImgBB из защищенной коллекции базы данных
@@ -309,8 +308,8 @@
                     fileInput.value = '';
                     loadAllData();
                 } catch (err) { alert("Ошибка: " + err.message); }
-                e.target.textContent = originalText;
-                e.target.disabled = false;
+                e.currentTarget.textContent = originalText;
+                e.currentTarget.disabled = false;
             });
         });
     </script>
