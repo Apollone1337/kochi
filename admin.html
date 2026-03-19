@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель | KOCHI•ART</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #2A2F2B;
+            --card-bg: #343A35;
+            --text-main: #EAE7E2;
+            --gold: #B0935B;
+        }
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .admin-container {
+            background: var(--card-bg);
+            padding: 40px;
+            border-top: 2px solid var(--gold);
+            width: 100%;
+            max-width: 800px;
+            border-radius: 4px;
+        }
+        h1, h2 { color: var(--gold); font-weight: 400;}
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-size: 14px; color: #949995; }
+        input[type="text"], input[type="password"] {
+            width: 100%; padding: 12px; background: var(--bg-color);
+            border: 1px solid rgba(255,255,255,0.1); color: white;
+            border-radius: 4px; box-sizing: border-box;
+        }
+        button {
+            background: var(--gold); color: var(--bg-color); border: none;
+            padding: 12px 24px; font-weight: 600; cursor: pointer;
+            border-radius: 2px; transition: 0.3s; width: auto; display: inline-block;
+        }
+        button:hover { background: #d4b578; }
+        button:disabled { background: #555; cursor: not-allowed; }
+        .hidden { display: none !important; }
+        .image-preview {
+            display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap;
+        }
+        .image-preview img {
+            width: 120px; height: 80px; object-fit: cover;
+            border: 1px solid var(--gold); border-radius: 2px;
+        }
+        .loader {
+            font-size: 12px; color: var(--gold); margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- СЕКЦИЯ ЛОГИНА -->
+    <div class="login-container" id="login-section">
+        <h1>Вход в систему</h1>
+        <div class="form-group">
+            <label>Email админа</label>
+            <input type="text" id="email" placeholder="admin@domain.com">
+        </div>
+        <div class="form-group">
+            <label>Пароль</label>
+            <input type="password" id="password" placeholder="••••••••">
+        </div>
+        <button id="login-btn" style="width: 100%;">Войти</button>
+    </div>
+
+    <!-- СЕКЦИЯ УПРАВЛЕНИЯ КОНТЕНТОМ -->
+    <div class="hidden dashboard-layout" id="dashboard-section">
+        
+        <aside class="sidebar">
+            <div class="admin-logo">KOCHI•ART Admin</div>
+            <nav>
+                <button class="tab-btn active" data-tab="tab-hero">Главный экран</button>
+                <button class="tab-btn" data-tab="tab-s1">Слайдер 1: Проектирование</button>
+                <button class="tab-btn" data-tab="tab-s2">Слайдер 2: Благоустройство</button>
+                <button class="tab-btn" data-tab="tab-s3">Слайдер 3: Уход</button>
+            </nav>
+            <button id="logout-btn" class="logout-btn">Выйти из системы</button>
+        </aside>
+
+        <main class="content-area">
+            
+            <!-- ВКЛАДКА: ГЛАВНЫЙ ЭКРАН -->
+            <div id="tab-hero" class="tab-content active">
+                <h2>Главный экран (Шапка сайта)</h2>
+                <div class="form-group">
+                    <label>Название проекта</label>
+                    <input type="text" id="hero-title" placeholder="高知 KOCHI•ART">
+                </div>
+                <div class="form-group">
+                    <label>Описание</label>
+                    <input type="text" id="hero-desc" placeholder="прогрессивные ландшафты">
+                </div>
+                <div class="form-group">
+                    <label>Слоган</label>
+                    <input type="text" id="hero-slogan" placeholder="«Вид из окна меняет сознание»">
+                </div>
+                <button id="save-hero-btn">Сохранить общие настройки</button>
+            </div>
+
+            <!-- ВКЛАДКА: СЛАЙДЕР 1 -->
+            <div id="tab-s1" class="tab-content">
+                <h2>Блок: Проектирование</h2>
+                <div class="form-group">
+                    <label>Заголовок блока (используйте Enter для переноса строк)</label>
+                    <textarea id="title-s1" rows="3"></textarea>
+                    <button class="save-title-btn" data-target="title-s1" data-key="titleS1" style="margin-top: 10px; font-size: 12px; padding: 8px 16px;">Сохранить текст</button>
+                </div>
+                <hr>
+                <div class="form-group">
+                    <label>Фотографии для этой карусели</label>
+                    <input type="file" id="file-s1" multiple accept="image/*">
+                    <button class="upload-img-btn" data-input="file-s1" data-slider="carousel1" style="margin-top: 15px;">Загрузить фото</button>
+                    <p style="margin-top: 20px; margin-bottom: 5px; font-size: 14px;">Текущие фото:</p>
+                    <div class="image-preview" id="preview-s1"></div>
+                </div>
+            </div>
+
+            <!-- ВКЛАДКА: СЛАЙДЕР 2 -->
+            <div id="tab-s2" class="tab-content">
+                <h2>Блок: Благоустройство</h2>
+                <div class="form-group">
+                    <label>Заголовок блока</label>
+                    <textarea id="title-s2" rows="2"></textarea>
+                    <button class="save-title-btn" data-target="title-s2" data-key="titleS2" style="margin-top: 10px; font-size: 12px; padding: 8px 16px;">Сохранить текст</button>
+                </div>
+                <hr>
+                <div class="form-group">
+                    <label>Фотографии для этой карусели</label>
+                    <input type="file" id="file-s2" multiple accept="image/*">
+                    <button class="upload-img-btn" data-input="file-s2" data-slider="carousel2" style="margin-top: 15px;">Загрузить фото</button>
+                    <p style="margin-top: 20px; margin-bottom: 5px; font-size: 14px;">Текущие фото:</p>
+                    <div class="image-preview" id="preview-s2"></div>
+                </div>
+            </div>
+
+            <!-- ВКЛАДКА: СЛАЙДЕР 3 -->
+            <div id="tab-s3" class="tab-content">
+                <h2>Блок: Уход</h2>
+                <div class="form-group">
+                    <label>Заголовок блока</label>
+                    <textarea id="title-s3" rows="2"></textarea>
+                    <button class="save-title-btn" data-target="title-s3" data-key="titleS3" style="margin-top: 10px; font-size: 12px; padding: 8px 16px;">Сохранить текст</button>
+                </div>
+                <hr>
+                <div class="form-group">
+                    <label>Фотографии для этой карусели</label>
+                    <input type="file" id="file-s3" multiple accept="image/*">
+                    <button class="upload-img-btn" data-input="file-s3" data-slider="carousel3" style="margin-top: 15px;">Загрузить фото</button>
+                    <p style="margin-top: 20px; margin-bottom: 5px; font-size: 14px;">Текущие фото:</p>
+                    <div class="image-preview" id="preview-s3"></div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script type="module">
+        // Подключение модулей Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        // --- ВСТАВЬ СВОЙ FIREBASE CONFIG СЮДА ---
+        const firebaseConfig = {
+        apiKey: "AIzaSyBBUJaS5O2-w-IiRx6ViQhjwE4ZxyHqDXY",
+        authDomain: "kochi-art-web.firebaseapp.com",
+        projectId: "kochi-art-web",
+        storageBucket: "kochi-art-web.firebasestorage.app",
+        messagingSenderId: "136666014395",
+         appId: "1:136666014395:web:f30ea60b93405df8563f9e",
+        measurementId: "G-C6QZ6PLXWJ"
+        };
+        // ----------------------------------------
+
+        // Инициализация
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                document.getElementById('login-section').classList.add('hidden');
+                document.getElementById('dashboard-section').classList.remove('hidden');
+                loadAllData();
+            } else {
+                document.getElementById('login-section').classList.remove('hidden');
+                document.getElementById('dashboard-section').classList.add('hidden');
+            }
+        });
+
+        document.getElementById('login-btn').addEventListener('click', () => {
+            const email = document.getElementById('email').value;
+            const pass = document.getElementById('password').value;
+            signInWithEmailAndPassword(auth, email, pass).catch(err => alert("Ошибка: " + err.message));
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', () => signOut(auth));
+
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                e.target.classList.add('active');
+                document.getElementById(e.target.dataset.tab).classList.add('active');
+            });
+        });
+
+        async function loadAllData() {
+            try {
+                const mainSnap = await getDoc(doc(db, "content", "main"));
+                if (mainSnap.exists()) {
+                    const d = mainSnap.data();
+                    document.getElementById('hero-title').value = d.heroTitle || "高知 KOCHI•ART";
+                    document.getElementById('hero-desc').value = d.heroDesc || "прогрессивные ландшафты";
+                    document.getElementById('hero-slogan').value = d.heroSlogan || "«Вид из окна меняет сознание»";
+                    document.getElementById('title-s1').value = d.titleS1 || "ПРОЕКТИРОВАНИЕ\nЧАСТНЫХ И ОБЩЕСТВЕННЫХ\nПРОСТРАНСТВ";
+                    document.getElementById('title-s2').value = d.titleS2 || "БЛАГОУСТРОЙСТВО";
+                    document.getElementById('title-s3').value = d.titleS3 || "УХОД";
+                }
+                const sliderSnap = await getDoc(doc(db, "content", "sliders"));
+                if (sliderSnap.exists()) {
+                    const d = sliderSnap.data();
+                    renderPreview('preview-s1', d.carousel1);
+                    renderPreview('preview-s2', d.carousel2);
+                    renderPreview('preview-s3', d.carousel3);
+                }
+            } catch (err) {
+                console.error(err);
+                if(err.code === 'permission-denied') {
+                    alert("ВНИМАНИЕ: Ошибка прав доступа к БД (Firebase). Пожалуйста, обновите правила Firestore!");
+                }
+            }
+        }
+
+        function renderPreview(containerId, urlsArray) {
+            const container = document.getElementById(containerId);
+            if (urlsArray && urlsArray.length > 0) {
+                container.innerHTML = urlsArray.map(url => `<img src="${url}">`).join('');
+            } else {
+                container.innerHTML = '<span class="loader">Нет загруженных фото</span>';
+            }
+        }
+
+        document.getElementById('save-hero-btn').addEventListener('click', async (e) => {
+            e.target.textContent = "Сохранение...";
+            await setDoc(doc(db, "content", "main"), {
+                heroTitle: document.getElementById('hero-title').value,
+                heroDesc: document.getElementById('hero-desc').value,
+                heroSlogan: document.getElementById('hero-slogan').value
+            }, { merge: true });
+            e.target.textContent = "Сохранить общие настройки";
+            alert("Тексты главного экрана успешно обновлены!");
+        });
+
+        document.querySelectorAll('.save-title-btn').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                const targetId = e.target.getAttribute('data-target');
+                const key = e.target.getAttribute('data-key');
+                const value = document.getElementById(targetId).value;
+                e.target.textContent = "Сохранение...";
+                await setDoc(doc(db, "content", "main"), { [key]: value }, { merge: true });
+                e.target.textContent = "Сохранить текст";
+                alert("Заголовок успешно обновлен!");
+            });
+        });
+
+        document.querySelectorAll('.upload-img-btn').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                const inputId = e.target.getAttribute('data-input');
+                const sliderKey = e.target.getAttribute('data-slider');
+                const fileInput = document.getElementById(inputId);
+                const files = fileInput.files;
+                if (files.length === 0) return alert("Пожалуйста, выберите файлы для загрузки.");
+                
+                const originalText = e.target.textContent;
+                e.target.textContent = "Загружаем...";
+                e.target.disabled = true;
+                
+                try {
+                    // Получаем секретный ключ ImgBB из защищенной коллекции базы данных
+                    const keySnap = await getDoc(doc(db, "settings", "secrets"));
+                    if (!keySnap.exists() || !keySnap.data().imgbb) {
+                        throw new Error("API ключ ImgBB не найден в базе данных Firebase!");
+                    }
+                    const imgbbApiKey = keySnap.data().imgbb;
+
+                    const urls = [];
+                    for (let file of files) {
+                        const formData = new FormData();
+                        formData.append('image', file);
+                        const response = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbApiKey}`, { method: 'POST', body: formData });
+                        const data = await response.json();
+                        if (data.success) urls.push(data.data.url);
+                        else throw new Error("Ошибка загрузки");
+                    }
+                    await setDoc(doc(db, "content", "sliders"), { [sliderKey]: urls }, { merge: true });
+                    alert("Фотографии успешно обновлены!");
+                    fileInput.value = '';
+                    loadAllData();
+                } catch (err) { alert("Ошибка: " + err.message); }
+                e.target.textContent = originalText;
+                e.target.disabled = false;
+            });
+        });
+    </script>
+</body>
+</html>
