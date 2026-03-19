@@ -84,6 +84,10 @@
                 <button class="tab-btn" data-tab="tab-s1">Слайдер 1: Проектирование</button>
                 <button class="tab-btn" data-tab="tab-s2">Слайдер 2: Благоустройство</button>
                 <button class="tab-btn" data-tab="tab-s3">Слайдер 3: Уход</button>
+                <button class="tab-btn" data-tab="tab-care">Блок: Служба заботы</button>
+                <button class="tab-btn" data-tab="tab-coop">Блок: Сотрудничество</button>
+                <button class="tab-btn" data-tab="tab-partners">Блок: Партнеры</button>
+                <button class="tab-btn" data-tab="tab-contacts">Контакты и Подвал</button>
             </nav>
             <button id="logout-btn" class="logout-btn">Выйти из системы</button>
         </aside>
@@ -105,7 +109,7 @@
                     <label>Слоган</label>
                     <input type="text" id="hero-slogan" placeholder="«Вид из окна меняет сознание»">
                 </div>
-                <button id="save-hero-btn">Сохранить общие настройки</button>
+                <button class="action-btn" onclick="saveTabData(this, ['hero-title', 'hero-desc', 'hero-slogan'])">Сохранить настройки</button>
             </div>
 
             <!-- ВКЛАДКА: СЛАЙДЕР 1 -->
@@ -114,7 +118,7 @@
                 <div class="form-group">
                     <label>Заголовок блока (используйте Enter для переноса строк)</label>
                     <textarea id="title-s1" rows="3"></textarea>
-                    <button class="save-title-btn" data-target="title-s1" data-key="titleS1" style="margin-top: 10px; font-size: 12px; padding: 8px 16px;">Сохранить текст</button>
+                    <button class="action-btn" onclick="saveTabData(this, ['title-s1'])" style="margin-top: 10px;">Сохранить текст</button>
                 </div>
                 <hr>
                 <div class="form-group">
@@ -132,7 +136,7 @@
                 <div class="form-group">
                     <label>Заголовок блока</label>
                     <textarea id="title-s2" rows="2"></textarea>
-                    <button class="save-title-btn" data-target="title-s2" data-key="titleS2" style="margin-top: 10px; font-size: 12px; padding: 8px 16px;">Сохранить текст</button>
+                    <button class="action-btn" onclick="saveTabData(this, ['title-s2'])" style="margin-top: 10px;">Сохранить текст</button>
                 </div>
                 <hr>
                 <div class="form-group">
@@ -150,7 +154,7 @@
                 <div class="form-group">
                     <label>Заголовок блока</label>
                     <textarea id="title-s3" rows="2"></textarea>
-                    <button class="save-title-btn" data-target="title-s3" data-key="titleS3" style="margin-top: 10px; font-size: 12px; padding: 8px 16px;">Сохранить текст</button>
+                    <button class="action-btn" onclick="saveTabData(this, ['title-s3'])" style="margin-top: 10px;">Сохранить текст</button>
                 </div>
                 <hr>
                 <div class="form-group">
@@ -160,6 +164,69 @@
                     <p style="margin-top: 20px; margin-bottom: 5px; font-size: 14px;">Текущие фото:</p>
                     <div class="image-preview" id="preview-s3"></div>
                 </div>
+            </div>
+
+            <!-- ВКЛАДКА: СЛУЖБА ЗАБОТЫ -->
+            <div id="tab-care" class="tab-content">
+                <h2>Служба заботы</h2>
+                <div class="form-group">
+                    <label>Заголовок блока</label>
+                    <input type="text" id="care-title">
+                    <hr style="margin: 20px 0;">
+                    <label>Пункт 1</label><input type="text" id="care-f1">
+                    <label>Пункт 2</label><input type="text" id="care-f2">
+                    <label>Пункт 3</label><input type="text" id="care-f3">
+                    <hr style="margin: 20px 0;">
+                    <label>Текст перед кнопкой (используйте Enter для переноса)</label><textarea id="care-cta" rows="2"></textarea>
+                    <label>Ссылка на кнопку (например, Telegram)</label><input type="text" id="care-link">
+                </div>
+                <button class="action-btn" onclick="saveTabData(this, ['care-title', 'care-f1', 'care-f2', 'care-f3', 'care-cta', 'care-link'])">Сохранить блок</button>
+            </div>
+
+            <!-- ВКЛАДКА: ПОРЯДОК СОТРУДНИЧЕСТВА -->
+            <div id="tab-coop" class="tab-content">
+                <h2>Порядок сотрудничества</h2>
+                <div class="form-group"><label>Заголовок блока</label><input type="text" id="coop-title"></div>
+                <div class="grid-2">
+                    <div class="card-box"><label>Шаг 1: Название</label><input type="text" id="coop1-n"><label>Шаг 1: Описание</label><textarea id="coop1-d" rows="2"></textarea></div>
+                    <div class="card-box"><label>Шаг 2: Название</label><input type="text" id="coop2-n"><label>Шаг 2: Описание</label><textarea id="coop2-d" rows="2"></textarea></div>
+                    <div class="card-box"><label>Шаг 3: Название</label><input type="text" id="coop3-n"><label>Шаг 3: Описание</label><textarea id="coop3-d" rows="2"></textarea></div>
+                    <div class="card-box"><label>Шаг 4: Название</label><input type="text" id="coop4-n"><label>Шаг 4: Описание</label><textarea id="coop4-d" rows="2"></textarea></div>
+                    <div class="card-box"><label>Шаг 5: Название</label><input type="text" id="coop5-n"><label>Шаг 5: Описание</label><textarea id="coop5-d" rows="2"></textarea></div>
+                    <div class="card-box"><label>Шаг 6: Название</label><input type="text" id="coop6-n"><label>Шаг 6: Описание</label><textarea id="coop6-d" rows="2"></textarea></div>
+                </div>
+                <button class="action-btn" onclick="saveTabData(this, ['coop-title', 'coop1-n', 'coop1-d', 'coop2-n', 'coop2-d', 'coop3-n', 'coop3-d', 'coop4-n', 'coop4-d', 'coop5-n', 'coop5-d', 'coop6-n', 'coop6-d'])">Сохранить блок</button>
+            </div>
+
+            <!-- ВКЛАДКА: ПАРТНЕРЫ -->
+            <div id="tab-partners" class="tab-content">
+                <h2>Наши партнеры</h2>
+                <div class="form-group"><label>Заголовок блока</label><input type="text" id="part-title"></div>
+                <div class="grid-2">
+                    <div class="card-box"><label>Партнер 1: Имя</label><input type="text" id="p1-n"><label>Партнер 1: Описание</label><textarea id="p1-d" rows="2"></textarea></div>
+                    <div class="card-box"><label>Партнер 2: Имя</label><input type="text" id="p2-n"><label>Партнер 2: Описание</label><textarea id="p2-d" rows="2"></textarea></div>
+                    <div class="card-box"><label>Партнер 3: Имя</label><input type="text" id="p3-n"><label>Партнер 3: Описание</label><textarea id="p3-d" rows="2"></textarea></div>
+                    <div class="card-box"><label>Партнер 4: Имя</label><input type="text" id="p4-n"><label>Партнер 4: Описание</label><textarea id="p4-d" rows="2"></textarea></div>
+                    <div class="card-box"><label>Партнер 5: Имя</label><input type="text" id="p5-n"><label>Партнер 5: Описание</label><textarea id="p5-d" rows="2"></textarea></div>
+                    <div class="card-box"><label>Партнер 6: Имя</label><input type="text" id="p6-n"><label>Партнер 6: Описание</label><textarea id="p6-d" rows="2"></textarea></div>
+                </div>
+                <button class="action-btn" onclick="saveTabData(this, ['part-title', 'p1-n', 'p1-d', 'p2-n', 'p2-d', 'p3-n', 'p3-d', 'p4-n', 'p4-d', 'p5-n', 'p5-d', 'p6-n', 'p6-d'])">Сохранить блок</button>
+            </div>
+
+            <!-- ВКЛАДКА: КОНТАКТЫ -->
+            <div id="tab-contacts" class="tab-content">
+                <h2>Контакты и Подвал</h2>
+                <div class="form-group">
+                    <label>Заголовок блока вопросов</label><input type="text" id="contact-title">
+                    <label>Описание</label><input type="text" id="contact-desc">
+                    <hr style="margin: 20px 0;">
+                    <label>Ссылка Telegram</label><input type="text" id="tg-link">
+                    <label>Ссылка WhatsApp (формат: https://wa.me/7...)</label><input type="text" id="wa-link">
+                    <label>Ссылка на телефон (формат: tel:+7...)</label><input type="text" id="phone-link">
+                    <hr style="margin: 20px 0;">
+                    <label>Локация в подвале (Footer)</label><input type="text" id="location-text">
+                </div>
+                <button class="action-btn" onclick="saveTabData(this, ['contact-title', 'contact-desc', 'tg-link', 'wa-link', 'phone-link', 'location-text'])">Сохранить блок</button>
             </div>
 
         </main>
@@ -221,12 +288,49 @@
                 const mainSnap = await getDoc(doc(db, "content", "main"));
                 const d = mainSnap.exists() ? mainSnap.data() : {};
                 
-                document.getElementById('hero-title').value = d.heroTitle || "高知 KOCHI•ART";
-                document.getElementById('hero-desc').value = d.heroDesc || "прогрессивные ландшафты";
-                document.getElementById('hero-slogan').value = d.heroSlogan || "«Вид из окна меняет сознание»";
-                document.getElementById('title-s1').value = d.titleS1 || "ПРОЕКТИРОВАНИЕ\nЧАСТНЫХ И ОБЩЕСТВЕННЫХ\nПРОСТРАНСТВ";
-                document.getElementById('title-s2').value = d.titleS2 || "БЛАГОУСТРОЙСТВО";
-                document.getElementById('title-s3').value = d.titleS3 || "УХОД";
+                const setV = (id, def) => { const el = document.getElementById(id); if(el) el.value = d[id] || def; };
+
+                // Общие настройки
+                setV('hero-title', '高知 KOCHI•ART');
+                setV('hero-desc', 'прогрессивные ландшафты');
+                setV('hero-slogan', '«Вид из окна меняет сознание»');
+                setV('title-s1', 'ПРОЕКТИРОВАНИЕ\nЧАСТНЫХ И ОБЩЕСТВЕННЫХ\nПРОСТРАНСТВ');
+                setV('title-s2', 'БЛАГОУСТРОЙСТВО');
+                setV('title-s3', 'УХОД');
+
+                // Служба заботы
+                setV('care-title', 'СЛУЖБА ЗАБОТЫ');
+                setV('care-f1', 'мы всегда на связи: консультации, рекомендации');
+                setV('care-f2', 'срочные выезды');
+                setV('care-f3', 'приоритетное обслуживание садов постоянных клиентов');
+                setV('care-cta', 'Получите консультацию по\nвашему саду уже сейчас');
+                setV('care-link', 'https://t.me/k_irina_dd');
+
+                // Сотрудничество
+                setV('coop-title', 'ПОРЯДОК СОТРУДНИЧЕСТВА');
+                setV('coop1-n', 'Бриф'); setV('coop1-d', 'Задачи, пожелания клиентов');
+                setV('coop2-n', 'Анализ объекта'); setV('coop2-d', 'Оценка потенциальной возможности благоустройства');
+                setV('coop3-n', 'Концепция'); setV('coop3-d', 'Пространственно-планировочное предложение в планах, схемах, визуализациях');
+                setV('coop4-n', 'Укрупненная смета'); setV('coop4-d', 'Примерный расчет материалов');
+                setV('coop5-n', 'Вынос проекта в натуру'); setV('coop5-d', 'Выбор подрядчиков и поставщиков. Детальная смета');
+                setV('coop6-n', 'Благоустройство'); setV('coop6-d', 'Планирование грунта, посадка растений, монтаж бордюров, отсыпка инертными материалами, укладка газона');
+
+                // Партнеры
+                setV('part-title', 'НАШИ ПАРТНЁРЫ');
+                setV('p1-n', 'ORGANICA'); setV('p1-d', 'Автоматические системы полива');
+                setV('p2-n', 'Садовый центр Веры Глуховой'); setV('p2-d', 'Посадочный материал');
+                setV('p3-n', 'Садовый центр Дизайн Флора'); setV('p3-d', 'Посадочный материал');
+                setV('p4-n', 'Садовый центр Флора ДД'); setV('p4-d', 'Посадочный материал');
+                setV('p5-n', 'МореКам'); setV('p5-d', 'Натуральный камень');
+                setV('p6-n', 'SVETHOLL'); setV('p6-d', 'Интерьерное и экстерьерное освещение');
+
+                // Контакты
+                setV('contact-title', 'ЕСТЬ ВОПРОСЫ?!');
+                setV('contact-desc', 'Мы всегда на связи и готовы обсудить ваш будущий сад');
+                setV('tg-link', 'https://t.me/k_irina_dd');
+                setV('wa-link', 'https://wa.me/79176158055');
+                setV('phone-link', 'tel:+79176158055');
+                setV('location-text', 'Ульяновская область');
 
                 const sliderSnap = await getDoc(doc(db, "content", "sliders"));
                 const s = sliderSnap.exists() ? sliderSnap.data() : {};
@@ -251,28 +355,25 @@
             }
         }
 
-        document.getElementById('save-hero-btn').addEventListener('click', async (e) => {
-            e.currentTarget.textContent = "Сохранение...";
-            await setDoc(doc(db, "content", "main"), {
-                heroTitle: document.getElementById('hero-title').value,
-                heroDesc: document.getElementById('hero-desc').value,
-                heroSlogan: document.getElementById('hero-slogan').value
-            }, { merge: true });
-            e.currentTarget.textContent = "Сохранить общие настройки";
-            alert("Тексты главного экрана успешно обновлены!");
-        });
-
-        document.querySelectorAll('.save-title-btn').forEach(btn => {
-            btn.addEventListener('click', async (e) => {
-                const targetId = e.currentTarget.dataset.target;
-                const key = e.currentTarget.dataset.key;
-                const value = document.getElementById(targetId).value;
-                e.currentTarget.textContent = "Сохранение...";
-                await setDoc(doc(db, "content", "main"), { [key]: value }, { merge: true });
-                e.currentTarget.textContent = "Сохранить текст";
-                alert("Заголовок успешно обновлен!");
+        // Универсальная функция сохранения любых текстов
+        window.saveTabData = async function(btn, ids) {
+            const originalText = btn.textContent;
+            btn.textContent = "Сохраняем...";
+            btn.disabled = true;
+            let dataToSave = {};
+            ids.forEach(id => {
+                const el = document.getElementById(id);
+                if(el) dataToSave[id] = el.value;
             });
-        });
+            try {
+                await setDoc(doc(db, "content", "main"), dataToSave, { merge: true });
+                alert("Успешно сохранено!");
+            } catch (error) {
+                alert("Ошибка сохранения: " + error.message);
+            }
+            btn.textContent = originalText;
+            btn.disabled = false;
+        };
 
         document.querySelectorAll('.upload-img-btn').forEach(btn => {
             btn.addEventListener('click', async (e) => {
