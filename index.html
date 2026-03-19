@@ -305,14 +305,47 @@
                 const mainSnap = await getDoc(doc(db, "content", "main"));
                 if (mainSnap.exists()) {
                     const md = mainSnap.data();
-                    if (md.heroTitle) document.querySelector('.main-title').innerHTML = md.heroTitle.replace(/\n/g, '<br>');
-                    if (md.heroDesc) document.querySelector('.description').textContent = md.heroDesc;
-                    if (md.heroSlogan) document.querySelector('.slogan').textContent = md.heroSlogan;
                     
+                    // Функции-помощники для безопасной подстановки данных
+                    const setHTML = (sel, id) => { const el = document.querySelector(sel); if(el && md[id]) el.innerHTML = md[id].replace(/\n/g, '<br>'); };
+                    const setText = (sel, id) => { const el = document.querySelector(sel); if(el && md[id]) el.textContent = md[id]; };
+                    const setHref = (sel, id) => { const el = document.querySelector(sel); if(el && md[id]) el.href = md[id]; };
+                    const setAll = (sel, ids) => { const els = document.querySelectorAll(sel); els.forEach((el, i) => { if(md[ids[i]]) el.textContent = md[ids[i]]; }); };
+
+                    // Главный экран и Слайдеры
+                    setHTML('.main-title', 'hero-title');
+                    setText('.description', 'hero-desc');
+                    setText('.slogan', 'hero-slogan');
+
                     const titles = document.querySelectorAll('.block-title');
-                    if (md.titleS1 && titles[0]) titles[0].innerHTML = md.titleS1.replace(/\n/g, '<br>');
-                    if (md.titleS2 && titles[1]) titles[1].innerHTML = md.titleS2.replace(/\n/g, '<br>');
-                    if (md.titleS3 && titles[2]) titles[2].innerHTML = md.titleS3.replace(/\n/g, '<br>');
+                    if (md['title-s1'] && titles[0]) titles[0].innerHTML = md['title-s1'].replace(/\n/g, '<br>');
+                    if (md['title-s2'] && titles[1]) titles[1].innerHTML = md['title-s2'].replace(/\n/g, '<br>');
+                    if (md['title-s3'] && titles[2]) titles[2].innerHTML = md['title-s3'].replace(/\n/g, '<br>');
+
+                    // Служба заботы
+                    setText('.care-title', 'care-title');
+                    setAll('.care-feature', ['care-f1', 'care-f2', 'care-f3']);
+                    setHTML('.care-cta-text', 'care-cta');
+                    setHref('.care-cta-button', 'care-link');
+
+                    // Сотрудничество
+                    setText('.cooperation-title', 'coop-title');
+                    setAll('.coop-name', ['coop1-n', 'coop2-n', 'coop3-n', 'coop4-n', 'coop5-n', 'coop6-n']);
+                    setAll('.coop-desc', ['coop1-d', 'coop2-d', 'coop3-d', 'coop4-d', 'coop5-d', 'coop6-d']);
+
+                    // Партнеры
+                    setText('.partners-title', 'part-title');
+                    setAll('.partner-name', ['p1-n', 'p2-n', 'p3-n', 'p4-n', 'p5-n', 'p6-n']);
+                    setAll('.partner-desc', ['p1-d', 'p2-d', 'p3-d', 'p4-d', 'p5-d', 'p6-d']);
+
+                    // Контакты
+                    setText('.questions-title', 'contact-title');
+                    setText('.answer-text', 'contact-desc');
+                    const messengers = document.querySelectorAll('.messenger-btn');
+                    if(md['tg-link'] && messengers[0]) messengers[0].href = md['tg-link'];
+                    if(md['wa-link'] && messengers[1]) messengers[1].href = md['wa-link'];
+                    setHref('.call-button', 'phone-link');
+                    setText('.footer-location span', 'location-text');
                 }
 
                 // Подтягиваем картинки
